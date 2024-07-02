@@ -48,11 +48,9 @@ class Payment(models.Model):
     user = models.ForeignKey(
         User, verbose_name="Пользователь", on_delete=models.CASCADE
     )
-    payment_date = models.DateTimeField(auto_now_add=True,
-                                        verbose_name="Дата оплаты")
+    payment_date = models.DateTimeField(auto_now_add=True, verbose_name="Дата оплаты")
     course = models.ForeignKey(
-        Course, verbose_name="Курс", on_delete=models.CASCADE, blank=True,
-        null=True
+        Course, verbose_name="Курс", on_delete=models.CASCADE, blank=True, null=True
     )
     lesson = models.ForeignKey(
         Lesson,
@@ -62,13 +60,13 @@ class Payment(models.Model):
         null=True,
     )
     total_price = models.FloatField(verbose_name="Сумма оплаты")
-    payment_method = models.CharField(max_length=50,
-                                      verbose_name="Способ оплаты")
+    payment_method = models.CharField(max_length=50, verbose_name="Способ оплаты")
 
     def __str__(self):
         return (
             f"{self.user} - {self.course if self.course else self.lesson} = "
-            f"{self.total_price}$")
+            f"{self.total_price}$"
+        )
 
     class Meta:
         verbose_name = "Платеж"
