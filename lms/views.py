@@ -1,15 +1,19 @@
+from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import (
     CreateAPIView,
     DestroyAPIView,
     ListAPIView,
     UpdateAPIView,
-    RetrieveAPIView,
+    RetrieveAPIView, get_object_or_404,
 )
-from lms.models import Course, Lesson
+from lms.models import Course, Lesson, Subscribe
 from lms.permissions import IsModerator, IsOwner
-from lms.serializers import CourseSerializer, LessonSerializer
+from lms.serializers import CourseSerializer, LessonSerializer, \
+    SubscribeSerializer
 
 
 class CourseViewSet(ModelViewSet):
@@ -76,3 +80,24 @@ class LessonDestroyAPIView(DestroyAPIView):
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
     permission_classes = [~IsModerator | IsOwner]
+
+
+class SubscribeCreateAPIView(CreateAPIView):
+    serializer_class = SubscribeSerializer
+
+    def post(self, *args, **kwargs):
+        user = self.request.user
+        course_id = self.request.data.get("course")
+        course_item = get_object_or_404(Course, pk=course_id)
+
+        subscribe, created = Subscribe.objects.get_or_create(user=user,
+                                                             course=course_item)
+        if not created:
+            subscribe.delete()
+            message = 'Subscribe deleted successfully'
+
+        else:
+            message = 'Subscribe created successfully'
+
+        return Response({'message': message})
+
