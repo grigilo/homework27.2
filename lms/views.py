@@ -18,6 +18,9 @@ from lms.serializers import CourseSerializer, LessonSerializer, \
 
 
 class CourseViewSet(ModelViewSet):
+    """
+    View set for a Course
+    """
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
     pagination_class = LmsPaginator
@@ -44,6 +47,9 @@ class CourseViewSet(ModelViewSet):
 
 
 class LessonCreateAPIView(CreateAPIView):
+    """
+    Lesson create endpoint
+    """
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
     permission_classes = [IsAuthenticated, ~IsModerator | IsOwner]
@@ -55,12 +61,18 @@ class LessonCreateAPIView(CreateAPIView):
 
 
 class LessonUpdateAPIView(UpdateAPIView):
+    """
+    Lesson update endpoint
+    """
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
     permission_classes = [IsModerator | IsOwner]
 
 
 class LessonListAPIView(ListAPIView):
+    """
+    Lesson list endpoint
+    """
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
     permission_classes = [IsAuthenticated, IsModerator | IsOwner]
@@ -74,18 +86,27 @@ class LessonListAPIView(ListAPIView):
 
 
 class LessonRetrieveAPIView(RetrieveAPIView):
+    """
+    Lesson retrieve endpoint
+    """
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
     permission_classes = [IsModerator | IsOwner]
 
 
 class LessonDestroyAPIView(DestroyAPIView):
+    """
+    Lesson delete endpoint
+    """
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
     permission_classes = [~IsModerator | IsOwner]
 
 
 class SubscribeCreateAPIView(CreateAPIView):
+    """
+    Subscribe create endpoint
+    """
     serializer_class = SubscribeSerializer
 
     def post(self, *args, **kwargs):
