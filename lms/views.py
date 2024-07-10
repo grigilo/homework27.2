@@ -8,19 +8,20 @@ from rest_framework.generics import (
     DestroyAPIView,
     ListAPIView,
     UpdateAPIView,
-    RetrieveAPIView, get_object_or_404,
+    RetrieveAPIView,
+    get_object_or_404,
 )
 from lms.models import Course, Lesson, Subscribe
 from lms.paginators import LmsPaginator
 from lms.permissions import IsModerator, IsOwner
-from lms.serializers import CourseSerializer, LessonSerializer, \
-    SubscribeSerializer
+from lms.serializers import CourseSerializer, LessonSerializer, SubscribeSerializer
 
 
 class CourseViewSet(ModelViewSet):
     """
     View set for a Course
     """
+
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
     pagination_class = LmsPaginator
@@ -50,6 +51,7 @@ class LessonCreateAPIView(CreateAPIView):
     """
     Lesson create endpoint
     """
+
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
     permission_classes = [IsAuthenticated, ~IsModerator | IsOwner]
@@ -64,6 +66,7 @@ class LessonUpdateAPIView(UpdateAPIView):
     """
     Lesson update endpoint
     """
+
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
     permission_classes = [IsModerator | IsOwner]
@@ -73,6 +76,7 @@ class LessonListAPIView(ListAPIView):
     """
     Lesson list endpoint
     """
+
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
     permission_classes = [IsAuthenticated, IsModerator | IsOwner]
@@ -89,6 +93,7 @@ class LessonRetrieveAPIView(RetrieveAPIView):
     """
     Lesson retrieve endpoint
     """
+
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
     permission_classes = [IsModerator | IsOwner]
@@ -98,6 +103,7 @@ class LessonDestroyAPIView(DestroyAPIView):
     """
     Lesson delete endpoint
     """
+
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
     permission_classes = [~IsModerator | IsOwner]
@@ -107,6 +113,7 @@ class SubscribeCreateAPIView(CreateAPIView):
     """
     Subscribe create endpoint
     """
+
     serializer_class = SubscribeSerializer
 
     def post(self, *args, **kwargs):
@@ -114,14 +121,14 @@ class SubscribeCreateAPIView(CreateAPIView):
         course_id = self.request.data.get("course")
         course_item = get_object_or_404(Course, pk=course_id)
 
-        subscribe, created = Subscribe.objects.get_or_create(user=user,
-                                                             course=course_item)
+        subscribe, created = Subscribe.objects.get_or_create(
+            user=user, course=course_item
+        )
         if not created:
             subscribe.delete()
-            message = 'Subscribe deleted successfully'
+            message = "Subscribe deleted successfully"
 
         else:
-            message = 'Subscribe created successfully'
+            message = "Subscribe created successfully"
 
-        return Response({'message': message})
-
+        return Response({"message": message})
