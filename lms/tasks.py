@@ -13,7 +13,9 @@ def send_mail_about_course(course):
         emails = []
         for subscription in subscriptions:
             emails.append(subscription.user.email)
-            send_mail(f'Обновление курса {course_name}',
-                      settings.EMAIL_HOST_USER,
-                      emails)
-
+        send_mail(
+            f"Обновление курса {course_name}",
+            f"Добавлен новый урок в курс {course_name}",
+            settings.EMAIL_HOST_USER,
+            emails,
+        )

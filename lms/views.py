@@ -14,8 +14,7 @@ from rest_framework.generics import (
 from lms.models import Course, Lesson, Subscribe
 from lms.paginators import LmsPaginator
 from lms.permissions import IsModerator, IsOwner
-from lms.serializers import CourseSerializer, LessonSerializer, \
-    SubscribeSerializer
+from lms.serializers import CourseSerializer, LessonSerializer, SubscribeSerializer
 from lms.tasks import send_mail_about_course
 
 

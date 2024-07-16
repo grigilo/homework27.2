@@ -1,5 +1,3 @@
-
-
 from celery import shared_task
 from dateutil.relativedelta import relativedelta
 
@@ -20,5 +18,3 @@ def check_last_login():
         else:
             user.last_login = now
             user.save()
-
-
